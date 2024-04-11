@@ -5,7 +5,8 @@ namespace CRUDUser.Models;
 
 public partial class Usuario
 {
-    public int Idusuario { get; set; }
+    public int IdUsuario { get; set; }
 
     public string? NameUsuario { get; set; }
 }
+

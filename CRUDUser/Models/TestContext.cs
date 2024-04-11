@@ -25,11 +25,11 @@ public partial class TestContext : DbContext
     {
         modelBuilder.Entity<Usuario>(entity =>
         {
-            entity.HasKey(e => e.Idusuario);
+            entity.HasKey(e => e.IdUsuario);
 
             entity.ToTable("usuarios");
 
-            entity.Property(e => e.Idusuario)
+            entity.Property(e => e.IdUsuario)
                 .ValueGeneratedNever()
                 .HasColumnName("IDUsuario");
             entity.Property(e => e.NameUsuario)
