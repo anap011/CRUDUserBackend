@@ -41,5 +41,24 @@ namespace CRUDUser.Controllers
             return Ok(usuarioDto);
         }
 
+        [HttpPost]
+        public async Task<ActionResult<UsuarioDto>> Add(UsuarioInsertDto usuarioInsertDto) {
+            var usuario = new Usuario()
+            {
+                NameUsuario = usuarioInsertDto.Name
+            };
+            await _context.Usuarios.AddAsync(usuario);
+            await _context.SaveChangesAsync(); //Recien en esta linea modifica la bbdd
+
+            var usuarioDto = new UsuarioDto
+            {
+                Id = usuario.IdUsuario,
+                Name = usuario.NameUsuario
+            };
+
+            return CreatedAtAction(nameof(GetById), new { id = usuario.IdUsuario }, usuarioDto);
+        }
+
+
     }
 }

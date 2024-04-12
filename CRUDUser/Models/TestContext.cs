@@ -2,44 +2,43 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace CRUDUser.Models;
-
-public partial class TestContext : DbContext
+namespace CRUDUser.Models
 {
-    public TestContext()
+    public partial class TestContext : DbContext
     {
-    }
-
-    public TestContext(DbContextOptions<TestContext> options)
-        : base(options)
-    {
-    }
-
-    public virtual DbSet<Usuario> Usuarios { get; set; }
-
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//       => optionsBuilder.UseSqlServer("server=DESKTOP-ANA\\SQLEXPRESS ; database=test; integrated security=true; TrustServerCertificate=true;");
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Usuario>(entity =>
+        public TestContext()
         {
-            entity.HasKey(e => e.IdUsuario);
+        }
 
-            entity.ToTable("usuarios");
+        public TestContext(DbContextOptions<TestContext> options)
+            : base(options)
+        {
+        }
 
-            entity.Property(e => e.IdUsuario)
-                .ValueGeneratedNever()
-                .HasColumnName("IDUsuario");
-            entity.Property(e => e.NameUsuario)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .IsFixedLength();
-        });
+        public virtual DbSet<Usuario> Usuarios { get; set; }
 
-        OnModelCreatingPartial(modelBuilder);
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Usuario>(entity =>
+            {
+                entity.HasKey(e => e.IdUsuario);
+
+                entity.ToTable("usuarios");
+
+                // Configurar la propiedad IdUsuario como auto-incremental
+                entity.Property(e => e.IdUsuario)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("IdUsuario");
+
+                entity.Property(e => e.NameUsuario)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .IsFixedLength();
+            });
+
+            OnModelCreatingPartial(modelBuilder);
+        }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
-
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
