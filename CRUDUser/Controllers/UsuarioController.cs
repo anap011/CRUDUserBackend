@@ -24,6 +24,22 @@ namespace CRUDUser.Controllers
                 Name = u.NameUsuario
             }).ToListAsync();
 
-        
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UsuarioDto>> GetById(int id) {
+            var usuario = await _context.Usuarios.FindAsync(id);
+
+            if (usuario == null) { 
+                return NotFound();
+            }
+
+            var usuarioDto = new UsuarioDto
+            {
+                Id = usuario.IdUsuario,
+                Name = usuario.NameUsuario
+            };
+
+            return Ok(usuarioDto);
+        }
+
     }
 }
